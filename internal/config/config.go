@@ -106,9 +106,14 @@ func (c *Config) Setup() error {
 			return errors.New("ensure that the wine root given is an absolute path")
 		}
 
-		_, err := os.Stat(filepath.Join(bin, "wine"))
-		if err != nil {
-			return fmt.Errorf("invalid wine root given: %s", err)
+		wine_path := filepath.Join(bin, "wine")
+		//Workaround for 64bit-only wine builds; they don't actually have a wine binary, so check for wine64 too.
+		wine64_path := filepath.Join(bin, "wine64")
+		_, err := os.Stat(wine_path)
+		_, err2 := os.Stat(wine64_path)
+
+		if err != nil && err2 != nil {
+			return fmt.Errorf("invalid wine root given: %s | %s", err, err2)
 		}
 
 		c.Env["PATH"] = bin + ":" + os.Getenv("PATH")
