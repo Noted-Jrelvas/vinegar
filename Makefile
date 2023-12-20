@@ -20,9 +20,13 @@ ROBLOX_ICONS = \
 
 VINEGAR_ICON = splash/vinegar.png
 
-all: vinegar robloxmutexer.exe
+all: vinegarbridge vinegar robloxmutexer.exe
 icons: $(ROBLOX_ICONS) $(VINEGAR_ICON)
+
 install: install-vinegar install-robloxmutexer install-desktop install-icons
+
+vinegarbridge:
+	$(GO) generate ./studiobridge/plugin.go
 
 vinegar:
 	$(GO) build $(VINEGAR_GOFLAGS) $(GOFLAGS) -ldflags="$(VINEGAR_LDFLAGS)" ./cmd/vinegar
@@ -105,3 +109,4 @@ clean:
 	rm -f vinegar robloxmutexer.exe
 
 .PHONY: all install install-vinegar install-robloxmutexer install-desktop install-icons uninstall icons mime tests clean
+
