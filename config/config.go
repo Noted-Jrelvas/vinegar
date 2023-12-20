@@ -20,7 +20,15 @@ import (
 // used in [splash.Config] to set the icon path.
 var LogoPath string
 
+<<<<<<< HEAD
 // Config is a representation of a Roblox binary Vinegar configuration.
+=======
+type Bridge struct {
+	Enabled bool   `toml:"enabled"`
+	Port    uint16 `toml:"port"`
+}
+
+>>>>>>> 4f17b15 (VinegarBridge: Add initial Bridge configuration options)
 type Binary struct {
 	Channel       string        `toml:"channel"`
 	Launcher      string        `toml:"launcher"`
@@ -43,6 +51,7 @@ type Config struct {
 	Player            Binary      `toml:"player"`
 	Studio            Binary      `toml:"studio"`
 	Env               Environment `toml:"env"`
+	Bridge            Bridge      `toml:"bridge"`
 
 	Splash splash.Config `toml:"splash"`
 }
@@ -125,6 +134,11 @@ func Default() Config {
 			TrackColor:  0x303030,
 			AccentColor: 0x8fbc5e,
 			InfoColor:   0x777777,
+		},
+
+		Bridge: Bridge{
+			Enabled: false,
+			Port: 57434,
 		},
 	}
 }

@@ -20,6 +20,7 @@ import (
 	"github.com/vinegarhq/vinegar/roblox"
 	boot "github.com/vinegarhq/vinegar/roblox/bootstrapper"
 	"github.com/vinegarhq/vinegar/splash"
+	"github.com/vinegarhq/vinegar/studiobridge"
 	"github.com/vinegarhq/vinegar/util"
 	"github.com/vinegarhq/vinegar/wine"
 	"github.com/vinegarhq/vinegar/wine/dxvk"
@@ -95,6 +96,10 @@ func (b *Binary) Run(args ...string) error {
 		} else {
 			defer b.Activity.Close()
 		}
+	}
+
+	if err := b.SetupBridge(); err != nil {
+		return err
 	}
 
 	// REQUIRED for HandleRobloxLog to function.
@@ -384,6 +389,18 @@ func (b *Binary) ExtractPackages(pm *boot.PackageManifest) error {
 
 		return pkg.Extract(filepath.Join(dirs.Downloads, pkg.Checksum), filepath.Join(b.Dir, dest))
 	})
+}
+
+func (b *Binary) SetupBridge() error {
+	if b.Type != roblox.Studio {
+		return nil
+	}
+
+	if !b.GlobalConfig.Bridge.Enabled {
+		return studiobridge.Remove(b.Prefix)
+	}
+
+	return studiobridge.Install(b.Prefix, int(b.GlobalConfig.Bridge.Port))
 }
 
 func (b *Binary) SetupDxvk() error {
