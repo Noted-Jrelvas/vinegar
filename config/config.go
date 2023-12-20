@@ -20,15 +20,11 @@ import (
 // used in [splash.Config] to set the icon path.
 var LogoPath string
 
-<<<<<<< HEAD
-// Config is a representation of a Roblox binary Vinegar configuration.
-=======
 type Bridge struct {
 	Enabled bool   `toml:"enabled"`
 	Port    uint16 `toml:"port"`
 }
 
->>>>>>> 4f17b15 (VinegarBridge: Add initial Bridge configuration options)
 type Binary struct {
 	Channel       string        `toml:"channel"`
 	Launcher      string        `toml:"launcher"`
